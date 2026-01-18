@@ -8,6 +8,8 @@ import SignUp from '../pages/SignUp'
 import Room from '../pages/Room'
 import Event from '../pages/Event'
 import Error from '../pages/Error'
+import ProtectedRoutes from '../Routes/ProtectedRoutes'
+
 
 
 const NavigationRoute = () => {
@@ -16,11 +18,11 @@ const NavigationRoute = () => {
     
         <Routes>
           <Route path='/' element={<Layout><Home/></Layout>}/>
-           <Route path='/dashboard' element={<Layout><DashBoard/></Layout>}/>
-           <Route path='/login' element={<Layout><Login/></Layout>}/>
-            <Route path='/signup' element={<Layout><SignUp/></Layout>}/>
-            <Route path='/room/:roomId' element={<Room/>}/>
-            <Route path='/event/:roomId' element={<Event/>}/>
+           <Route path='/dashboard' element={<Layout><ProtectedRoutes><DashBoard/></ProtectedRoutes></Layout>}/>
+           <Route path='/login' element={<Layout><ProtectedRoutes><Login/></ProtectedRoutes></Layout>}/>
+            <Route path='/signup' element={<Layout><ProtectedRoutes><SignUp/></ProtectedRoutes></Layout>}/>
+            <Route path='/room/:roomId' element={<ProtectedRoutes><Room/></ProtectedRoutes>}/>
+            <Route path='/event/:roomId' element={<ProtectedRoutes><Event/></ProtectedRoutes>}/>
             <Route path='/*' element={<Error/>}/>
 
           

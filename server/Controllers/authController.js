@@ -1,4 +1,4 @@
-const user= require("../Models/user");
+const User= require("../Models/user");
 const bcrypt= require("bcrypt");
 const jwt= require("jsonwebtoken");
 
@@ -8,14 +8,14 @@ const signup= async (req,res)=>{
 
     try{
 
-        let user= await user.findone({email});
+        let user= await User.findOne({email});
 
         if(user){
             return res.status(400).json({success:false , message:"Please login", data:null});
         }
 
         const hashedPassword= await bcrypt.hash(password,10);
-        user= await user.create({
+        user= await User.create({
             email,
             password:hashedPassword,
             firstName,
@@ -37,7 +37,7 @@ const login= async (req,res)=>{
     const {email, password}= req.body;
 
     try{
-        const user= await user.find({email});
+        const user= await User.findOne({email});
         if(!user){
             return res.status(400).json({success:false , message:"User not found, please signup", data:null});
         }
@@ -52,7 +52,7 @@ const login= async (req,res)=>{
 
         return res.status(200).json({success:true, message:"Login successful", data:{user,token}});
 
-        return res.status(200).json({success:true , message:"Login successful", data:{user, token}});
+        
     } catch(error){
         return res.status(500).json({success:false , message:error.message, data:null});
     }

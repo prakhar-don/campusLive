@@ -10,9 +10,10 @@ const createEvent= async (req,res)=>{
         return res.status(403).json({success:false , message:"You are not authorized to create events", data:null})
     }
 
-    const userId= req.id;
+    const userId= req.user.id;
     
     const {title, description, date, time}= req.body;
+    console.log(userId);
 
     try{
 

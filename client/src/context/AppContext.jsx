@@ -2,25 +2,32 @@ import { createContext, useState } from "react";
 
 export const AppContext = createContext(null);
 
-export const AppProvider = ({children}) => {
+export const AppProvider = ({ children }) => {
 
-     const [isAuthenticated, setIsAuthenticated] = useState(
-    false
-     );
+  const storedUser = localStorage.getItem("user");
 
-     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user"))) || null;
+  const [user, setUser] = useState(
+    storedUser ? JSON.parse(storedUser) : null
+  );
 
-     const [events, setEvents] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
 
+  const [events, setEvents] = useState([]);
 
-
-
-
-
-    return (
-        <AppContext.Provider value={{isAuthenticated, setIsAuthenticated, user, setUser, events, setEvents}}>
-            {children}
-        </AppContext.Provider>
-    )
-
-}
+  return (
+    <AppContext.Provider
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        user,
+        setUser,
+        events,
+        setEvents
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};

@@ -15,9 +15,10 @@ const verifyToken= (req,res,next)=>{
         if(!decoded){
             return res.status(401).json({success:false, message:"Unauthorized access", data:null});
         }
-
-          req.id= decoded.id;
-          req.role= decoded.role;
+          req.user={
+          id: decoded.id,
+          role: decoded.role,
+          }
 
         next();
 

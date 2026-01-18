@@ -6,9 +6,9 @@ const {createEvent, registerUser, getEvents, getRegisteredEvents, getEventById, 
 
 router.post("/create-event", verifyToken, createEvent);
 
-router.put("/register-user/:eventId", verifyToken, registerUser);
+router.put("/register/:eventId", verifyToken, registerUser);
 
-router.get("/events",getEvents);
+router.get("/get-events",getEvents);
 
 router.get("/registered-events", verifyToken, getRegisteredEvents);
 

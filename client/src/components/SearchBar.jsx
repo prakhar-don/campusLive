@@ -1,6 +1,7 @@
 import React,{useState, useEffect, useContext} from 'react';
 import Input from '../components/ui/Input'
 import axios from 'axios';
+import {AppContext} from '../context/AppContext';
 
 const SearchBar = () => {
 
