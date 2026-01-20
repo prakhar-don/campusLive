@@ -14,7 +14,7 @@ const Home = () => {
   const registerEvent= async (eventId)=>{
     try{
 
-      const res= await axios.put(`${import.meta.env.VITE_API_URL}/register-event/${eventId}`,{},{
+      const res= await axios.put(`${import.meta.env.VITE_API_URL}/register/${eventId}`,{},{
 
         headers:{
           Authorization: `Bearer ${localStorage.getItem("token")}`

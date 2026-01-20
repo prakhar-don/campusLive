@@ -12,14 +12,14 @@ const Event = ({_id,
    date="2024-01-01",
    time="12:00",
    status="upcoming",
-   registereUsers=0,
+   registeredUsers=[],
    onClick}) => {
 
-    const {pathName} = useLocation();
+    const {pathname} = useLocation();
     const {user} = useContext(AppContext);
 
     const checkEventStatus=()=>{
-      if(pathName === '/dashboard'){
+      if(pathname === '/dashboard'){
         if(user?.role === "admin"){
           return status === "not started" ? "start now": status;
     }
@@ -49,7 +49,7 @@ const Event = ({_id,
             </h3>
             <div>
               <FiUsers className="text-sm sm:text-lg"/>
-              <span>{registereUsers?.length} Registered Users</span>
+              <span>{registeredUsers.length} Registered Users</span>
 
             </div>
           </div>

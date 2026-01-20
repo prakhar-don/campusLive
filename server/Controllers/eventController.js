@@ -2,7 +2,7 @@ const Event= require("../Models/event");
 
 const ROLES= require("../Lib/roles");
 
-const user= require("../Models/user");
+const User= require("../Models/user");
 
 const createEvent= async (req,res)=>{
 
@@ -35,10 +35,13 @@ const createEvent= async (req,res)=>{
 }
 
 const registerUser  = async (req,res)=>{
-    const userId= req.id;
+    const userId= req.user.id;
     const eventId= req.params.id;
 
     try{
+
+        console.log("JWT USER:", req.user);
+
        const event= await Event.findById(eventId);
        if(!event){
         return res.status(404).json({success:false, message:"Event not found", data:null});
@@ -54,7 +57,7 @@ const registerUser  = async (req,res)=>{
 
        await event.save();
 
-       const user= await user.findById(userId);
+       const user= await User.findById(userId);
        user.registeredEvents.push(eventId);
        await user.save();
 
@@ -84,11 +87,11 @@ const getEvents= async (req,res)=>{
 }
 
 const getRegisteredEvents= async (req,res)=>{
-    const userId= req.id;
+    const userId= req.user.id;
 
     try{
 
-        const events= await user.findById(userId).populate({
+        const events= await User.findById(userId).populate({
             path:"registeredEvents"
         })
         .sort({createdAt:-1});

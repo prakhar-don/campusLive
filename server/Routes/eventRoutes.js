@@ -6,19 +6,19 @@ const {createEvent, registerUser, getEvents, getRegisteredEvents, getEventById, 
 
 router.post("/create-event", verifyToken, createEvent);
 
-router.put("/register/:eventId", verifyToken, registerUser);
+router.put("/register/:id", verifyToken, registerUser);
 
 router.get("/get-events",getEvents);
 
 router.get("/registered-events", verifyToken, getRegisteredEvents);
 
-router.get("/event/:eventId", getEventById);
+router.get("/event/:id", getEventById);
 
 router.get("/search-event", searchEvent);
 
-router.put("/start-event/:eventId", verifyToken, startEvent);
+router.put("/start-event/:id", verifyToken, startEvent);
 
-router.put("/end-event/:eventId", verifyToken, endEvent);
+router.put("/end-event/:id", verifyToken, endEvent);
 
 
 
