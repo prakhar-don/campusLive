@@ -9,6 +9,7 @@ import {AppContext} from '../context/AppContext'
 
 
 
+
 const Login = () => {
 
   const {isAuthenticated, setIsAuthenticated,setUser}= useContext(AppContext);
@@ -36,6 +37,7 @@ const { token, user } = data.data;
         e.target.reset();
         localStorage.setItem("token",token);
         localStorage.setItem("user",JSON.stringify(user));
+        setUser(user);
         setIsAuthenticated(true);
         navigate("/dashboard");
       } else{

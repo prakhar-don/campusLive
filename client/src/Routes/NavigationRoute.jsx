@@ -22,7 +22,7 @@ const NavigationRoute = () => {
            <Route path='/login' element={<Layout><ProtectedRoutes><Login/></ProtectedRoutes></Layout>}/>
             <Route path='/signup' element={<Layout><ProtectedRoutes><SignUp/></ProtectedRoutes></Layout>}/>
             <Route path='/room/:roomId' element={<ProtectedRoutes><Room/></ProtectedRoutes>}/>
-            <Route path='/event/:roomId' element={<ProtectedRoutes><Event/></ProtectedRoutes>}/>
+            <Route path='/event/:id' element={<ProtectedRoutes><Event/></ProtectedRoutes>}/>
             <Route path='/*' element={<Error/>}/>
 
           

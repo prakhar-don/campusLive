@@ -2,7 +2,7 @@ const express= require("express");
 const router= express.Router();
 const verifyToken= require("../Middlewares/verifyToken");
 
-const {createEvent, registerUser, getEvents, getRegisteredEvents, getEventById, searchEvent, startEvent, endEvent}= require("../Controllers/eventController");
+const {createEvent, registerUser, getEvents, getRegisteredEvents, getEventById, searchEvent, startEvent, endEvent,getAdminCreatedEvents}= require("../Controllers/eventController");
 
 router.post("/create-event", verifyToken, createEvent);
 
@@ -19,6 +19,9 @@ router.get("/search-event", searchEvent);
 router.put("/start-event/:id", verifyToken, startEvent);
 
 router.put("/end-event/:id", verifyToken, endEvent);
+
+router.get("/admin-created-events", verifyToken, getAdminCreatedEvents);
+
 
 
 

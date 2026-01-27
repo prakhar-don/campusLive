@@ -17,7 +17,8 @@ const Navbar = () => {
  }
 
   return (
-    <nav className="flex justify-between items-center p-5 w-full md:w-[50vw] max-auto mt-3">
+    <div>
+    <nav className="flex justify-between items-center p-5 w-full md:w-[50vw] mx-auto mt-3">
 
         <Link to={"/"} className='text-2xl'>CampusLive</Link>
 
@@ -37,6 +38,7 @@ const Navbar = () => {
         )}
 
     </nav>
+    </div>
     
   )
 }

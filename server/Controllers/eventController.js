@@ -4,6 +4,8 @@ const ROLES= require("../Lib/roles");
 
 const User= require("../Models/user");
 
+const mongoose= require("mongoose");
+
 const createEvent= async (req,res)=>{
 
     if(req.user.role !== ROLES.Admin){
@@ -34,8 +36,39 @@ const createEvent= async (req,res)=>{
 
 }
 
+ const getAdminCreatedEvents = async (req, res) => {
+  if (req.user.role !== ROLES.Admin) {
+    return res.status(403).json({
+      success: false,
+      message: "Not authorized",
+      data: null,
+    });
+  }
+
+  try {
+    const events = await Event.find({ creator: req.user.id })
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      message: "Admin created events fetched successfully",
+      data: events,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
 const registerUser  = async (req,res)=>{
+    if(req.user.role !== ROLES.user){
+        return res.status(401).json({success:false , message:"You are not authorized to register for events", data:null});    
+    }
     const userId= req.user.id;
+    
     const eventId= req.params.id;
 
     try{
@@ -92,9 +125,13 @@ const getRegisteredEvents= async (req,res)=>{
     try{
 
         const events= await User.findById(userId).populate({
-            path:"registeredEvents"
+            path:"registeredEvents",
+            options:{
+                sort:{createdAt:-1},
+
+            }
         })
-        .sort({createdAt:-1});
+        
 
         if(events.registeredEvents.length <= 0){
             return res.status(404).json({success:false, message:"No registered events found", data:null});
@@ -109,10 +146,18 @@ const getRegisteredEvents= async (req,res)=>{
 }
 
 const getEventById= async (req,res)=>{
-    const {eventId}= req.params.id;
+    const {id}= req.params;
+
+     if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid event ID",
+      data: null,
+    });
+  }
 
     try{
-            const eventdData= await Event.findById(eventId).populate({
+            const eventdData= await Event.findById(id).populate({
                 path:"registeredUsers",
                 select:"firstName lastName role",
             })
@@ -157,10 +202,10 @@ const startEvent= async (req,res)=>{
         return res.status(403).json({success:false , message:"You are not authorized to start events", data:null})
     }
 
-    const {eventId}= req.params;
+    const {id}= req.params;
 
     try{
-        await Event.findByIdAndUpdate(eventId, {status:"started"});
+        await Event.findByIdAndUpdate(id, {status:"started"});
 
         return res.status(200).json({success:true, message:"Event started successfully", data:null});
     } catch(error){
@@ -173,11 +218,11 @@ const endEvent= async (req,res)=>{
         return res.status(403).json({success:false , message:"You are not authorized to end events", data:null})
 }
 
-   const {eventId}= req.params;
+   const {id}= req.params;
 
    try{
 
-    await Event.findByIdAndUpdate(eventId, {status:"ended"});
+    await Event.findByIdAndUpdate(id, {status:"ended"});
 
     return res.status(200).json({success:true, message:"Event ended successfully", data:null});
 
@@ -196,6 +241,7 @@ module.exports={
     searchEvent,
     startEvent,
     endEvent,
+    getAdminCreatedEvents
 }
 
 

@@ -22,17 +22,27 @@ const Home = () => {
 
       });
 
-      const {data}= await res.data;
+      const data=  res.data;
 
       if(data.success){
         toast.success(data.message);
-      } else{
+         setEvents((prevEvents) =>
+        prevEvents.map((event) =>
+          event._id === eventId
+            ? { ...event, registeredUsers: data.data.registeredUsers }
+            : event
+        )
+      );
+      console.log("Updated registered users:", data.data.registeredUsers);
+
+      
+    } else{
         toast.error(data.message);
       }
 
 
     } catch(err){
-      toast(err.response.data.message);
+      toast(err.response?.data?.message || "Registration Failed");
     }
   }
 useEffect(()=>{
@@ -61,7 +71,7 @@ useEffect(()=>{
         }
 
       </div>
-      <Event/>
+      
       </div>
     
   )

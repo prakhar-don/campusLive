@@ -9,23 +9,29 @@ const SearchBar = () => {
 
     const {setEvents}= useContext(AppContext);
 
-    useEffect(()=>{
+   useEffect(() => {
+  const delayDebounceFn = setTimeout(async () => {
+    try {
+      if (searchTerm.trim()) {
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/search-event?search=${searchTerm}`
+        );
+        setEvents(res.data.data);
+      } else {
+        // 🔥 FIX: fetch all events again
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/get-events`
+        );
+        setEvents(res.data.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, 300);
 
-        const delayDebounceFn = setTimeout(() => {
+  return () => clearTimeout(delayDebounceFn);
+}, [searchTerm]);
 
-            if(searchTerm){
-                const res= axios.get(`${import.meta.env.VITE_API_URL}/search-event?search=${searchTerm}`)
-                .then((res)=> setEvents(res.data.data))
-                .catch((err)=> console.log(err));
-            }
-
-        }, 300)
-
-        return () => {
-            clearTimeout(delayDebounceFn)
-        };
-
-    },[searchTerm]);
 
     const handleChange= (e)=>{
         setSearch(e.target.value);
